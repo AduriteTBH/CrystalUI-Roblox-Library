@@ -51,38 +51,40 @@ local Library = {
     
     -- Theme
     Scheme = {
-        -- Main Colors
-        Background = Color3.fromRGB(15, 15, 20),
-        Surface = Color3.fromRGB(25, 25, 35),
-        SurfaceLight = Color3.fromRGB(35, 35, 50),
+        -- Main Colors - Darker, more modern
+        Background = Color3.fromRGB(18, 18, 24),
+        Surface = Color3.fromRGB(28, 28, 38),
+        SurfaceLight = Color3.fromRGB(42, 42, 56),
+        SurfaceLighter = Color3.fromRGB(55, 55, 72),
         
-        -- Glass Effect Colors
-        GlassBackground = Color3.fromRGB(30, 30, 45),
-        GlassBorder = Color3.fromRGB(60, 60, 80),
+        -- Glass Effect Colors - More pronounced
+        GlassBackground = Color3.fromRGB(35, 35, 48),
+        GlassBorder = Color3.fromRGB(70, 70, 95),
         GlassHighlight = Color3.fromRGB(255, 255, 255),
         
-        -- Accent Colors
-        Accent = Color3.fromRGB(100, 140, 255),
-        AccentDark = Color3.fromRGB(70, 100, 200),
-        AccentLight = Color3.fromRGB(130, 170, 255),
+        -- Accent Colors - Vibrant blue-purple
+        Accent = Color3.fromRGB(88, 101, 242),
+        AccentDark = Color3.fromRGB(71, 82, 196),
+        AccentLight = Color3.fromRGB(114, 137, 255),
+        AccentGlow = Color3.fromRGB(88, 101, 242),
         
         -- Text Colors
         TextPrimary = Color3.fromRGB(255, 255, 255),
-        TextSecondary = Color3.fromRGB(180, 180, 200),
-        TextMuted = Color3.fromRGB(120, 120, 140),
+        TextSecondary = Color3.fromRGB(185, 185, 210),
+        TextMuted = Color3.fromRGB(130, 130, 160),
         
         -- Status Colors
-        Success = Color3.fromRGB(100, 200, 120),
-        Warning = Color3.fromRGB(255, 180, 80),
-        Error = Color3.fromRGB(255, 100, 100),
+        Success = Color3.fromRGB(87, 242, 135),
+        Warning = Color3.fromRGB(254, 231, 92),
+        Error = Color3.fromRGB(237, 66, 69),
         
         -- Effects
         Shadow = Color3.fromRGB(0, 0, 0),
-        GlowColor = Color3.fromRGB(100, 140, 255),
+        GlowColor = Color3.fromRGB(88, 101, 242),
         
         -- Transparency
-        GlassTransparency = 0.15,
-        BorderTransparency = 0.5,
+        GlassTransparency = 0.08,
+        BorderTransparency = 0.6,
     },
     
     -- Fonts
@@ -534,9 +536,9 @@ function Library:CreateWindow(options)
         Visible = options.AutoShow,
         Parent = screenGui
     })
-    AddCorner(window, 12)
-    AddStroke(window, Library.Scheme.GlassBorder, 1)
-    AddShadow(window, 0.4)
+    AddCorner(window, 10)
+    AddStroke(window, Library.Scheme.GlassBorder, 1, 0.7)
+    AddShadow(window, 0.3)
     
     Library.Toggled = options.AutoShow
     
@@ -544,20 +546,31 @@ function Library:CreateWindow(options)
     local titleBar = Create("Frame", {
         Name = "TitleBar",
         BackgroundColor3 = Library.Scheme.Surface,
-        Size = UDim2.new(1, 0, 0, 40),
+        Size = UDim2.new(1, 0, 0, 44),
         ZIndex = 2,
         Parent = window
     })
-    AddCorner(titleBar, 12)
+    AddCorner(titleBar, 10)
     
     -- Fix bottom corners of title bar
     Create("Frame", {
         Name = "BottomFix",
         BackgroundColor3 = Library.Scheme.Surface,
-        Size = UDim2.new(1, 0, 0, 15),
-        Position = UDim2.new(0, 0, 1, -15),
+        Size = UDim2.new(1, 0, 0, 12),
+        Position = UDim2.new(0, 0, 1, -12),
         ZIndex = 2,
         BorderSizePixel = 0,
+        Parent = titleBar
+    })
+    
+    -- Title divider line
+    Create("Frame", {
+        Name = "Divider",
+        BackgroundColor3 = Library.Scheme.GlassBorder,
+        BackgroundTransparency = 0.5,
+        Size = UDim2.new(1, 0, 0, 1),
+        Position = UDim2.new(0, 0, 1, 0),
+        ZIndex = 3,
         Parent = titleBar
     })
     
@@ -565,12 +578,12 @@ function Library:CreateWindow(options)
     Create("TextLabel", {
         Name = "Title",
         BackgroundTransparency = 1,
-        Position = UDim2.new(0, 15, 0, 0),
-        Size = UDim2.new(1, -30, 1, 0),
+        Position = UDim2.new(0, 16, 0, 0),
+        Size = UDim2.new(1, -90, 1, 0),
         FontFace = Library.Font.Bold,
         Text = options.Title,
         TextColor3 = Library.Scheme.TextPrimary,
-        TextSize = 16,
+        TextSize = 15,
         TextXAlignment = Enum.TextXAlignment.Left,
         ZIndex = 3,
         Parent = titleBar
@@ -580,23 +593,23 @@ function Library:CreateWindow(options)
     local closeBtn = Create("TextButton", {
         Name = "Close",
         BackgroundColor3 = Library.Scheme.Error,
-        BackgroundTransparency = 0.8,
-        Position = UDim2.new(1, -35, 0.5, -10),
-        Size = UDim2.new(0, 20, 0, 20),
-        Text = "×",
+        BackgroundTransparency = 1,
+        Position = UDim2.new(1, -38, 0.5, -12),
+        Size = UDim2.new(0, 24, 0, 24),
+        Text = "✕",
         FontFace = Library.Font.Bold,
-        TextColor3 = Library.Scheme.TextPrimary,
-        TextSize = 18,
+        TextColor3 = Library.Scheme.TextSecondary,
+        TextSize = 14,
         ZIndex = 3,
         Parent = titleBar
     })
     AddCorner(closeBtn, 6)
     
     closeBtn.MouseEnter:Connect(function()
-        Tween(closeBtn, {BackgroundTransparency = 0.4}, 0.15)
+        Tween(closeBtn, {BackgroundTransparency = 0.2, TextColor3 = Library.Scheme.TextPrimary}, 0.15)
     end)
     closeBtn.MouseLeave:Connect(function()
-        Tween(closeBtn, {BackgroundTransparency = 0.8}, 0.15)
+        Tween(closeBtn, {BackgroundTransparency = 1, TextColor3 = Library.Scheme.TextSecondary}, 0.15)
     end)
     closeBtn.MouseButton1Click:Connect(function()
         Library:Toggle(false)
@@ -606,37 +619,37 @@ function Library:CreateWindow(options)
     local minimizeBtn = Create("TextButton", {
         Name = "Minimize",
         BackgroundColor3 = Library.Scheme.Warning,
-        BackgroundTransparency = 0.8,
-        Position = UDim2.new(1, -60, 0.5, -10),
-        Size = UDim2.new(0, 20, 0, 20),
-        Text = "−",
+        BackgroundTransparency = 1,
+        Position = UDim2.new(1, -66, 0.5, -12),
+        Size = UDim2.new(0, 24, 0, 24),
+        Text = "─",
         FontFace = Library.Font.Bold,
-        TextColor3 = Library.Scheme.TextPrimary,
-        TextSize = 18,
+        TextColor3 = Library.Scheme.TextSecondary,
+        TextSize = 14,
         ZIndex = 3,
         Parent = titleBar
     })
     AddCorner(minimizeBtn, 6)
     
     minimizeBtn.MouseEnter:Connect(function()
-        Tween(minimizeBtn, {BackgroundTransparency = 0.4}, 0.15)
+        Tween(minimizeBtn, {BackgroundTransparency = 0.2, TextColor3 = Library.Scheme.TextPrimary}, 0.15)
     end)
     minimizeBtn.MouseLeave:Connect(function()
-        Tween(minimizeBtn, {BackgroundTransparency = 0.8}, 0.15)
+        Tween(minimizeBtn, {BackgroundTransparency = 1, TextColor3 = Library.Scheme.TextSecondary}, 0.15)
     end)
     
     -- Tab Container (Left side)
     local tabContainer = Create("Frame", {
         Name = "TabContainer",
         BackgroundColor3 = Library.Scheme.Surface,
-        BackgroundTransparency = 0.5,
-        Position = UDim2.new(0, 8, 0, 48),
-        Size = UDim2.new(0, 140, 1, -56),
+        BackgroundTransparency = 0.3,
+        Position = UDim2.new(0, 8, 0, 52),
+        Size = UDim2.new(0, 150, 1, -60),
         ZIndex = 2,
         Parent = window
     })
-    AddCorner(tabContainer)
-    AddStroke(tabContainer, nil, 1, 0.7)
+    AddCorner(tabContainer, 8)
+    AddStroke(tabContainer, Library.Scheme.GlassBorder, 1, 0.75)
     
     local tabList = Create("ScrollingFrame", {
         Name = "TabList",
@@ -644,12 +657,13 @@ function Library:CreateWindow(options)
         Size = UDim2.new(1, 0, 1, 0),
         ScrollBarThickness = 2,
         ScrollBarImageColor3 = Library.Scheme.Accent,
+        ScrollBarImageTransparency = 0.3,
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.Y,
         ZIndex = 3,
         Parent = tabContainer
     })
-    AddPadding(tabList, 6)
+    AddPadding(tabList, 8)
     
     Create("UIListLayout", {
         SortOrder = Enum.SortOrder.LayoutOrder,
@@ -661,8 +675,8 @@ function Library:CreateWindow(options)
     local contentContainer = Create("Frame", {
         Name = "ContentContainer",
         BackgroundTransparency = 1,
-        Position = UDim2.new(0, 156, 0, 48),
-        Size = UDim2.new(1, -164, 1, -56),
+        Position = UDim2.new(0, 166, 0, 52),
+        Size = UDim2.new(1, -174, 1, -60),
         ClipsDescendants = true,
         ZIndex = 2,
         Parent = window
@@ -673,8 +687,8 @@ function Library:CreateWindow(options)
         local footer = Create("TextLabel", {
             Name = "Footer",
             BackgroundTransparency = 1,
-            Position = UDim2.new(0, 15, 1, -25),
-            Size = UDim2.new(1, -30, 0, 20),
+            Position = UDim2.new(0, 16, 1, -22),
+            Size = UDim2.new(1, -32, 0, 18),
             FontFace = Library.Font.Regular,
             Text = options.Footer,
             TextColor3 = Library.Scheme.TextMuted,
@@ -734,7 +748,7 @@ function Library:CreateWindow(options)
     minimizeBtn.MouseButton1Click:Connect(function()
         minimized = not minimized
         if minimized then
-            Tween(window, {Size = UDim2.new(0, originalSize.X.Offset, 0, 40)}, 0.25)
+            Tween(window, {Size = UDim2.new(0, originalSize.X.Offset, 0, 44)}, 0.25)
             contentContainer.Visible = false
             tabContainer.Visible = false
         else
@@ -781,7 +795,7 @@ function Library:CreateWindow(options)
         
         -- Tab Name
         local nameLabel = Create("TextLabel", {
-            Name = "Name",
+            Name = "NameLabel",
             BackgroundTransparency = 1,
             Position = icon and UDim2.new(0, 32, 0, 0) or UDim2.new(0, 12, 0, 0),
             Size = icon and UDim2.new(1, -42, 1, 0) or UDim2.new(1, -24, 1, 0),
@@ -870,7 +884,14 @@ function Library:CreateWindow(options)
             for _, t in ipairs(Window.Tabs) do
                 t.Content.Visible = false
                 Tween(t.Button, {BackgroundTransparency = 1}, 0.15)
-                t.Button.Name.TextColor3 = Library.Scheme.TextSecondary
+                local tNameLabel = t.Button:FindFirstChild("NameLabel")
+                local tIconLabel = t.Button:FindFirstChild("Icon")
+                if tNameLabel then
+                    tNameLabel.TextColor3 = Library.Scheme.TextSecondary
+                end
+                if tIconLabel then
+                    tIconLabel.TextColor3 = Library.Scheme.TextSecondary
+                end
             end
             
             Tab.Content.Visible = true
@@ -907,21 +928,21 @@ function Library:CreateWindow(options)
             local groupbox = Create("Frame", {
                 Name = "Groupbox_" .. name,
                 BackgroundColor3 = Library.Scheme.Surface,
+                BackgroundTransparency = 0.15,
                 Size = UDim2.new(1, 0, 0, 0),
                 AutomaticSize = Enum.AutomaticSize.Y,
                 ZIndex = 4,
                 Parent = parent
             })
-            AddCorner(groupbox)
-            AddStroke(groupbox, nil, 1, 0.7)
-            CreateGlassEffect(groupbox)
+            AddCorner(groupbox, 8)
+            AddStroke(groupbox, Library.Scheme.GlassBorder, 1, 0.7)
             
             -- Title
             local title = Create("TextLabel", {
                 Name = "Title",
                 BackgroundTransparency = 1,
                 Position = UDim2.new(0, 12, 0, 0),
-                Size = UDim2.new(1, -24, 0, 32),
+                Size = UDim2.new(1, -24, 0, 34),
                 FontFace = Library.Font.Bold,
                 Text = name,
                 TextColor3 = Library.Scheme.TextPrimary,
@@ -935,9 +956,9 @@ function Library:CreateWindow(options)
             Create("Frame", {
                 Name = "Divider",
                 BackgroundColor3 = Library.Scheme.GlassBorder,
-                BackgroundTransparency = 0.5,
-                Position = UDim2.new(0, 8, 0, 32),
-                Size = UDim2.new(1, -16, 0, 1),
+                BackgroundTransparency = 0.4,
+                Position = UDim2.new(0, 10, 0, 34),
+                Size = UDim2.new(1, -20, 0, 1),
                 ZIndex = 6,
                 Parent = groupbox
             })
@@ -946,13 +967,13 @@ function Library:CreateWindow(options)
             local content = Create("Frame", {
                 Name = "Content",
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 0, 0, 40),
+                Position = UDim2.new(0, 0, 0, 42),
                 Size = UDim2.new(1, 0, 0, 0),
                 AutomaticSize = Enum.AutomaticSize.Y,
                 ZIndex = 5,
                 Parent = groupbox
             })
-            AddPadding(content, 8)
+            AddPadding(content, 10)
             
             Create("UIListLayout", {
                 SortOrder = Enum.SortOrder.LayoutOrder,
@@ -1032,15 +1053,15 @@ function Library:CreateWindow(options)
                 local btn = Create("TextButton", {
                     Name = "Button",
                     BackgroundColor3 = options.Risky and Library.Scheme.Error or Library.Scheme.SurfaceLight,
-                    BackgroundTransparency = options.Risky and 0.7 or 0,
-                    Size = UDim2.new(1, 0, 0, 32),
+                    BackgroundTransparency = options.Risky and 0.6 or 0,
+                    Size = UDim2.new(1, 0, 0, 34),
                     Text = "",
                     ZIndex = 6,
                     LayoutOrder = self.ElementCount,
                     Parent = self.Content
                 })
                 AddCorner(btn, 6)
-                AddStroke(btn, nil, 1, 0.8)
+                AddStroke(btn, options.Risky and Library.Scheme.Error or Library.Scheme.GlassBorder, 1, 0.7)
                 
                 local btnText = Create("TextLabel", {
                     Name = "Text",
@@ -1063,12 +1084,20 @@ function Library:CreateWindow(options)
                 
                 btn.MouseEnter:Connect(function()
                     if not disabled then
-                        Tween(btn, {BackgroundTransparency = 0.3}, 0.1)
+                        Tween(btn, {BackgroundTransparency = 0.2}, 0.1)
+                        local stroke = btn:FindFirstChildOfClass("UIStroke")
+                        if stroke then
+                            Tween(stroke, {Color = Library.Scheme.Accent, Transparency = 0.5}, 0.1)
+                        end
                     end
                 end)
                 
                 btn.MouseLeave:Connect(function()
-                    Tween(btn, {BackgroundTransparency = options.Risky and 0.7 or 0}, 0.1)
+                    Tween(btn, {BackgroundTransparency = options.Risky and 0.6 or 0}, 0.1)
+                    local stroke = btn:FindFirstChildOfClass("UIStroke")
+                    if stroke then
+                        Tween(stroke, {Color = options.Risky and Library.Scheme.Error or Library.Scheme.GlassBorder, Transparency = 0.7}, 0.1)
+                    end
                 end)
                 
                 btn.MouseButton1Click:Connect(function()
@@ -1112,7 +1141,7 @@ function Library:CreateWindow(options)
                 function ButtonObject:AddButton(subOptions)
                     -- Create sub-button next to main button
                     local container = btn.Parent
-                    btn.Size = UDim2.new(0.5, -2, 0, 32)
+                    btn.Size = UDim2.new(0.5, -3, 0, 34)
                     
                     subOptions = subOptions or {}
                     subOptions.Text = subOptions.Text or "Sub Button"
@@ -1121,15 +1150,15 @@ function Library:CreateWindow(options)
                     local subBtn = Create("TextButton", {
                         Name = "SubButton",
                         BackgroundColor3 = Library.Scheme.SurfaceLight,
-                        Size = UDim2.new(0.5, -2, 0, 32),
-                        Position = UDim2.new(0.5, 2, 0, 0),
+                        Size = UDim2.new(0.5, -3, 0, 34),
+                        Position = UDim2.new(0.5, 3, 0, 0),
                         Text = "",
                         ZIndex = 6,
                         LayoutOrder = btn.LayoutOrder,
                         Parent = container
                     })
                     AddCorner(subBtn, 6)
-                    AddStroke(subBtn, nil, 1, 0.8)
+                    AddStroke(subBtn, Library.Scheme.GlassBorder, 1, 0.7)
                     
                     Create("TextLabel", {
                         Name = "Text",
@@ -1171,7 +1200,7 @@ function Library:CreateWindow(options)
                 local container = Create("Frame", {
                     Name = "Toggle_" .. idx,
                     BackgroundTransparency = 1,
-                    Size = UDim2.new(1, 0, 0, 28),
+                    Size = UDim2.new(1, 0, 0, 30),
                     ZIndex = 6,
                     LayoutOrder = self.ElementCount,
                     Parent = self.Content
@@ -1181,7 +1210,7 @@ function Library:CreateWindow(options)
                     Name = "Label",
                     BackgroundTransparency = 1,
                     Position = UDim2.new(0, 0, 0, 0),
-                    Size = UDim2.new(1, -50, 1, 0),
+                    Size = UDim2.new(1, -52, 1, 0),
                     FontFace = Library.Font.Regular,
                     Text = options.Text,
                     TextColor3 = options.Disabled and Library.Scheme.TextMuted or Library.Scheme.TextSecondary,
@@ -1191,27 +1220,28 @@ function Library:CreateWindow(options)
                     Parent = container
                 })
                 
-                -- Toggle switch
+                -- Toggle switch background
                 local switchBg = Create("Frame", {
                     Name = "SwitchBg",
                     BackgroundColor3 = Library.Scheme.SurfaceLight,
-                    Position = UDim2.new(1, -44, 0.5, -10),
-                    Size = UDim2.new(0, 44, 0, 20),
+                    Position = UDim2.new(1, -46, 0.5, -11),
+                    Size = UDim2.new(0, 46, 0, 22),
                     ZIndex = 7,
                     Parent = container
                 })
-                AddCorner(switchBg, 10)
-                AddStroke(switchBg, nil, 1, 0.8)
+                AddCorner(switchBg, 11)
+                AddStroke(switchBg, Library.Scheme.GlassBorder, 1, 0.6)
                 
+                -- Toggle knob
                 local switchKnob = Create("Frame", {
                     Name = "Knob",
-                    BackgroundColor3 = Library.Scheme.TextSecondary,
-                    Position = UDim2.new(0, 3, 0.5, -7),
-                    Size = UDim2.new(0, 14, 0, 14),
+                    BackgroundColor3 = Library.Scheme.TextMuted,
+                    Position = UDim2.new(0, 3, 0.5, -8),
+                    Size = UDim2.new(0, 16, 0, 16),
                     ZIndex = 8,
                     Parent = switchBg
                 })
-                AddCorner(switchKnob, 7)
+                AddCorner(switchKnob, 8)
                 
                 if options.Tooltip then
                     Library:AddTooltip(container, options.Tooltip, options.DisabledTooltip)
@@ -1225,15 +1255,23 @@ function Library:CreateWindow(options)
                     if state then
                         Tween(switchBg, {BackgroundColor3 = Library.Scheme.Accent}, 0.2)
                         Tween(switchKnob, {
-                            Position = UDim2.new(1, -17, 0.5, -7),
+                            Position = UDim2.new(1, -19, 0.5, -8),
                             BackgroundColor3 = Library.Scheme.TextPrimary
                         }, 0.2)
+                        local stroke = switchBg:FindFirstChildOfClass("UIStroke")
+                        if stroke then
+                            Tween(stroke, {Color = Library.Scheme.AccentLight}, 0.2)
+                        end
                     else
                         Tween(switchBg, {BackgroundColor3 = Library.Scheme.SurfaceLight}, 0.2)
                         Tween(switchKnob, {
-                            Position = UDim2.new(0, 3, 0.5, -7),
-                            BackgroundColor3 = Library.Scheme.TextSecondary
+                            Position = UDim2.new(0, 3, 0.5, -8),
+                            BackgroundColor3 = Library.Scheme.TextMuted
                         }, 0.2)
+                        local stroke = switchBg:FindFirstChildOfClass("UIStroke")
+                        if stroke then
+                            Tween(stroke, {Color = Library.Scheme.GlassBorder}, 0.2)
+                        end
                     end
                 end
                 
@@ -1261,8 +1299,12 @@ function Library:CreateWindow(options)
                 -- Initialize visual
                 if state then
                     switchBg.BackgroundColor3 = Library.Scheme.Accent
-                    switchKnob.Position = UDim2.new(1, -17, 0.5, -7)
+                    switchKnob.Position = UDim2.new(1, -19, 0.5, -8)
                     switchKnob.BackgroundColor3 = Library.Scheme.TextPrimary
+                    local stroke = switchBg:FindFirstChildOfClass("UIStroke")
+                    if stroke then
+                        stroke.Color = Library.Scheme.AccentLight
+                    end
                 end
                 
                 local Toggle = {
@@ -2536,9 +2578,9 @@ function Library:CreateWindow(options)
                 }
                 
                 -- Copy all element methods from groupbox
-                for name, func in pairs(tabbox) do
-                    if type(func) == "function" and name:match("^Add") then
-                        tab[name] = function(self, ...)
+                for methodName, func in pairs(tabbox) do
+                    if type(func) == "function" and methodName:match("^Add") then
+                        tab[methodName] = function(self, ...)
                             local oldContent = tabbox.Content
                             tabbox.Content = tabContent
                             tabbox.ElementCount = self.ElementCount
@@ -2554,7 +2596,10 @@ function Library:CreateWindow(options)
                     for _, t in ipairs(tabs) do
                         t.Content.Visible = false
                         Tween(t.Button, {BackgroundTransparency = 1}, 0.15)
-                        t.Button.Label.TextColor3 = Library.Scheme.TextSecondary
+                        local tLabel = t.Button:FindFirstChild("Label")
+                        if tLabel then
+                            tLabel.TextColor3 = Library.Scheme.TextSecondary
+                        end
                     end
                     
                     tab.Content.Visible = true
@@ -2653,9 +2698,9 @@ function Library:CreateWindow(options)
                     ElementCount = 0
                 }
                 
-                for name, func in pairs(tabbox) do
-                    if type(func) == "function" and name:match("^Add") then
-                        tab[name] = function(self, ...)
+                for methodName, func in pairs(tabbox) do
+                    if type(func) == "function" and methodName:match("^Add") then
+                        tab[methodName] = function(self, ...)
                             local oldContent = tabbox.Content
                             tabbox.Content = tabContent
                             tabbox.ElementCount = self.ElementCount
@@ -2671,7 +2716,10 @@ function Library:CreateWindow(options)
                     for _, t in ipairs(tabs) do
                         t.Content.Visible = false
                         Tween(t.Button, {BackgroundTransparency = 1}, 0.15)
-                        t.Button.Label.TextColor3 = Library.Scheme.TextSecondary
+                        local tLabel = t.Button:FindFirstChild("Label")
+                        if tLabel then
+                            tLabel.TextColor3 = Library.Scheme.TextSecondary
+                        end
                     end
                     
                     tab.Content.Visible = true
