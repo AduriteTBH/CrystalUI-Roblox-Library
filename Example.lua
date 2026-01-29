@@ -9,7 +9,7 @@
 -- For local testing: local Library = require(script.Parent.Library)
 -- For GitHub hosting: local Library = loadstring(game:HttpGet("YOUR_RAW_GITHUB_URL"))()
 
-local Library = loadstring(game:HttpGet("YOUR_CRYSTALUI_LIBRARY_URL"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AduriteTBH/CrystalUI-Roblox-Library/refs/heads/main/Library.lua"))()
 
 --[[ ============================================
     CREATE WINDOW
