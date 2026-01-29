@@ -7,7 +7,7 @@
 -- Load the library
 -- For production: local Library = loadstring(game:HttpGet("YOUR_CRYSTALUI_URL"))()
 -- For testing, paste the Library.lua contents above this line or use:
-local Library = loadstring(game:HttpGet("PASTE_YOUR_RAW_GITHUB_URL_HERE"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AduriteTBH/CrystalUI-Roblox-Library/refs/heads/main/Library.lua"))()
 
 --[[ ============================================
     CREATE WINDOW
