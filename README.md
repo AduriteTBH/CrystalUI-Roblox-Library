@@ -18,7 +18,7 @@ A modern, glass morphism UI library for Roblox with smooth animations and full c
 ## Installation
 
 ```lua
-local Library = loadstring(game:HttpGet("YOUR_RAW_GITHUB_URL/Library.lua"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AduriteTBH/CrystalUI-Roblox-Library/refs/heads/main/Library.lua"))()
 ```
 
 ## Quick Start
